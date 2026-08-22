@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import JsBarcode from 'jsbarcode';
+import { useBarcodeFormat } from '../hooks/useBarcodeFormat';
 
 interface BarcodeDisplayProps {
   value: string;
@@ -7,12 +8,14 @@ interface BarcodeDisplayProps {
 
 export function BarcodeDisplay({ value }: BarcodeDisplayProps) {
   const svgRef = useRef<SVGSVGElement>(null);
+  const { format } = useBarcodeFormat();
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (!svgRef.current || !value) return;
     try {
       JsBarcode(svgRef.current, value, {
-        format: 'CODE128',
+        format,
         lineColor: '#000000',
         background: '#ffffff',
         width: 3,
@@ -21,10 +24,16 @@ export function BarcodeDisplay({ value }: BarcodeDisplayProps) {
         fontSize: 20,
         margin: 10,
       });
+      setError(false);
     } catch {
-      // Value has characters CODE128 can't encode; leave the barcode blank.
+      setError(true);
     }
-  }, [value]);
+  }, [value, format]);
 
-  return <svg ref={svgRef} className="barcode-svg" />;
+  return (
+    <>
+      <svg ref={svgRef} className="barcode-svg" style={{ display: error ? 'none' : undefined }} />
+      {error && <p className="barcode-error">Can't render this value as {format}.</p>}
+    </>
+  );
 }
