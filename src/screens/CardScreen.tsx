@@ -3,15 +3,17 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useFamily } from '../hooks/useFamily';
 import { useBarcodeFormat } from '../hooks/useBarcodeFormat';
 import { BarcodeDisplay } from '../components/BarcodeDisplay';
+import { ConfirmDialog } from '../components/ConfirmDialog';
 import { BARCODE_FORMATS, isBarcodeFormatValue } from '../barcodeFormats';
 
 export function CardScreen() {
   const { memberId, cardId } = useParams<{ memberId: string; cardId: string }>();
-  const { getCard } = useFamily();
+  const { getCard, removeCard } = useFamily();
   const { format, setFormat } = useBarcodeFormat();
   const navigate = useNavigate();
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [activePane, setActivePane] = useState(0);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   const card = memberId && cardId ? getCard(memberId, cardId) : undefined;
 
@@ -45,6 +47,14 @@ export function CardScreen() {
           ←
         </button>
         <h1>{card.libraryName}</h1>
+        <button
+          type="button"
+          className="row-delete"
+          aria-label="Delete this card"
+          onClick={() => setConfirmingDelete(true)}
+        >
+          ✕
+        </button>
       </header>
 
       <div className="barcode-scroller" ref={scrollerRef} onScroll={handleScroll}>
@@ -63,6 +73,17 @@ export function CardScreen() {
         <span className={`pane-dot ${activePane === 1 ? 'active' : ''}`} />
       </div>
       <p className="swipe-hint">Swipe to switch between card number and password</p>
+
+      {confirmingDelete && (
+        <ConfirmDialog
+          message="Delete this library card?"
+          onCancel={() => setConfirmingDelete(false)}
+          onConfirm={() => {
+            if (memberId && cardId) removeCard(memberId, cardId);
+            navigate(`/member/${memberId}`);
+          }}
+        />
+      )}
 
       <div className="barcode-format-picker">
         <label htmlFor="barcode-format">Barcode type</label>
