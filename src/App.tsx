@@ -4,6 +4,7 @@ import { BarcodeFormatContext, useBarcodeFormatState } from './hooks/useBarcodeF
 import { MembersScreen } from './screens/MembersScreen';
 import { MemberScreen } from './screens/MemberScreen';
 import { CardScreen } from './screens/CardScreen';
+import { SharedCardScreen } from './screens/SharedCardScreen';
 
 export default function App() {
   const family = useFamilyState();
@@ -17,6 +18,7 @@ export default function App() {
             <Route path="/" element={<MembersScreen />} />
             <Route path="/member/:memberId" element={<MemberScreen />} />
             <Route path="/member/:memberId/card/:cardId" element={<CardScreen />} />
+            <Route path="/shared-card" element={<SharedCardScreen />} />
           </Routes>
         </HashRouter>
       </BarcodeFormatContext.Provider>

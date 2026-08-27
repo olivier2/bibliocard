@@ -4,9 +4,9 @@ import { loadMembers, saveMembers } from '../storage';
 
 export interface FamilyApi {
   members: FamilyMember[];
-  addMember: (name: string) => void;
+  addMember: (name: string) => string;
   removeMember: (memberId: string) => void;
-  addCard: (memberId: string, card: Omit<LibraryCard, 'id'>) => void;
+  addCard: (memberId: string, card: Omit<LibraryCard, 'id'>) => string;
   removeCard: (memberId: string, cardId: string) => void;
   getMember: (memberId: string) => FamilyMember | undefined;
   getCard: (memberId: string, cardId: string) => LibraryCard | undefined;
@@ -22,6 +22,7 @@ export function useFamilyState(): FamilyApi {
   function addMember(name: string) {
     const member: FamilyMember = { id: crypto.randomUUID(), name, cards: [] };
     setMembers((prev) => [...prev, member]);
+    return member.id;
   }
 
   function removeMember(memberId: string) {
@@ -33,6 +34,7 @@ export function useFamilyState(): FamilyApi {
     setMembers((prev) =>
       prev.map((m) => (m.id === memberId ? { ...m, cards: [...m.cards, newCard] } : m)),
     );
+    return newCard.id;
   }
 
   function removeCard(memberId: string, cardId: string) {
