@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useFamily } from '../hooks/useFamily';
 import { AddCardModal } from '../components/AddCardModal';
 import { ConfirmDialog } from '../components/ConfirmDialog';
+import { ShareCardModal } from '../components/ShareCardModal';
+import type { LibraryCard } from '../types';
 
 export function MemberScreen() {
   const { memberId } = useParams<{ memberId: string }>();
@@ -10,6 +12,7 @@ export function MemberScreen() {
   const navigate = useNavigate();
   const [adding, setAdding] = useState(false);
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
+  const [sharingCard, setSharingCard] = useState<LibraryCard | null>(null);
 
   const member = memberId ? getMember(memberId) : undefined;
 
@@ -47,17 +50,30 @@ export function MemberScreen() {
                 <span className="list-row-title">{card.libraryName}</span>
                 <span className="list-row-subtitle">{card.cardNumber}</span>
               </div>
-              <button
-                type="button"
-                className="row-delete"
-                aria-label={`Delete ${card.libraryName} card`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setPendingDelete(card.id);
-                }}
-              >
-                ✕
-              </button>
+              <div className="list-row-actions">
+                <button
+                  type="button"
+                  className="row-share"
+                  aria-label={`Share ${card.libraryName} card`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSharingCard(card);
+                  }}
+                >
+                  ↗
+                </button>
+                <button
+                  type="button"
+                  className="row-delete"
+                  aria-label={`Delete ${card.libraryName} card`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPendingDelete(card.id);
+                  }}
+                >
+                  ✕
+                </button>
+              </div>
             </li>
           ))}
         </ul>
@@ -79,6 +95,14 @@ export function MemberScreen() {
             removeCard(member.id, pendingDelete);
             setPendingDelete(null);
           }}
+        />
+      )}
+
+      {sharingCard && (
+        <ShareCardModal
+          memberName={member.name}
+          card={sharingCard}
+          onClose={() => setSharingCard(null)}
         />
       )}
     </div>

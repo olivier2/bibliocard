@@ -144,7 +144,14 @@ button {
   font-size: 0.875rem;
 }
 
-.row-delete {
+.list-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+.row-delete,
+.row-share {
   width: 44px;
   height: 44px;
   min-width: 44px;
@@ -159,6 +166,11 @@ button {
 .row-delete:active {
   background: var(--border);
   color: var(--danger);
+}
+
+.row-share:active {
+  background: var(--border);
+  color: var(--accent);
 }
 
 .fab {
@@ -297,6 +309,34 @@ button {
 .btn-danger {
   background: var(--danger);
   color: #ffffff;
+}
+
+/* Share modal */
+
+.share-qr-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem 0 1rem;
+}
+
+.qr-code {
+  width: 220px;
+  max-width: 100%;
+}
+
+.qr-code svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.share-url {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  word-break: break-all;
+  text-align: center;
+  margin: 0 0 1rem;
 }
 
 /* Confirm dialog */
