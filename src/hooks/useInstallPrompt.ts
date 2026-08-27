@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { isStandalone } from '../pwa';
+import { isStandalone, supportsInstallPrompt } from '../pwa';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -47,5 +47,7 @@ export function useInstallPrompt() {
     isVisible: deferredEvent !== null && !dismissed,
     promptInstall,
     dismiss,
+    canPromptNatively: deferredEvent !== null,
+    supportsNativePrompt: supportsInstallPrompt(),
   };
 }
