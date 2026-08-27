@@ -5,6 +5,13 @@ import { BarcodeFormat, DecodeHintType, NotFoundException } from '@zxing/library
 interface BarcodeScannerProps {
   onDetected: (text: string) => void;
   onCancel: () => void;
+  // 'linear' (default) reads the library-card formats below. 'qr' reads only
+  // QR codes - mixing 1D and 2D formats together is what triggers the
+  // rotate-fallback bug described above, so a single-format mode is safe.
+  // This is a mode rather than a raw BarcodeFormat[] prop so callers never
+  // need to import @zxing/library themselves, which would pull it out of
+  // this component's lazy-loaded chunk and into their own bundle.
+  mode?: 'linear' | 'qr';
 }
 
 // All 1D/linear formats @zxing/library can decode - library cards are read by
@@ -28,13 +35,13 @@ const LINEAR_FORMATS = [
   BarcodeFormat.UPC_E,
 ];
 
-export function BarcodeScanner({ onDetected, onCancel }: BarcodeScannerProps) {
+export function BarcodeScanner({ onDetected, onCancel, mode = 'linear' }: BarcodeScannerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const hints = new Map();
-    hints.set(DecodeHintType.POSSIBLE_FORMATS, LINEAR_FORMATS);
+    hints.set(DecodeHintType.POSSIBLE_FORMATS, mode === 'qr' ? [BarcodeFormat.QR_CODE] : LINEAR_FORMATS);
     hints.set(DecodeHintType.TRY_HARDER, true);
     const reader = new BrowserMultiFormatReader(hints);
     let controls: { stop: () => void } | undefined;

@@ -194,6 +194,15 @@ button {
   transform: scale(0.96);
 }
 
+.fab-secondary {
+  left: calc(env(safe-area-inset-left) + 1.5rem);
+  right: auto;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-size: 1.375rem;
+}
+
 /* Modals */
 
 .modal-overlay {
@@ -384,6 +393,57 @@ button {
 
 .confirm-actions button {
   flex: 1;
+}
+
+/* Install prompt */
+
+.install-banner {
+  position: fixed;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: calc(env(safe-area-inset-bottom) + 0.75rem);
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 0.875rem 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.install-banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.install-banner-text strong {
+  font-size: 0.9375rem;
+}
+
+.install-banner-text span {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.install-banner-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.install-banner-actions .btn-primary,
+.install-banner-actions .btn-secondary {
+  width: auto;
+  margin-top: 0;
+  padding: 0 0.875rem;
+  min-height: 40px;
+  font-size: 0.875rem;
 }
 
 /* Scanner */

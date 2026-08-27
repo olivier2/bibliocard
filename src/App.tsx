@@ -5,6 +5,7 @@ import { MembersScreen } from './screens/MembersScreen';
 import { MemberScreen } from './screens/MemberScreen';
 import { CardScreen } from './screens/CardScreen';
 import { SharedCardScreen } from './screens/SharedCardScreen';
+import { InstallPrompt } from './components/InstallPrompt';
 
 export default function App() {
   const family = useFamilyState();
@@ -21,6 +22,7 @@ export default function App() {
             <Route path="/shared-card" element={<SharedCardScreen />} />
           </Routes>
         </HashRouter>
+        <InstallPrompt />
       </BarcodeFormatContext.Provider>
     </FamilyContext.Provider>
   );
