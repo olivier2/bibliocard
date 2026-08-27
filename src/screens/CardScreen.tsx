@@ -54,7 +54,7 @@ export function CardScreen() {
         </div>
         <div className="barcode-pane">
           <span className="barcode-pane-label">Password</span>
-          <BarcodeDisplay value={card.password} />
+          <BarcodeDisplay value={card.password} mask />
         </div>
       </div>
 

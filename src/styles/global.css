@@ -402,6 +402,9 @@ button {
 .barcode-svg {
   max-width: 100%;
   height: auto;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .barcode-error {
@@ -409,6 +412,12 @@ button {
   font-size: 0.9rem;
   text-align: center;
   max-width: 280px;
+}
+
+.barcode-mask-hint {
+  color: #6b7280;
+  font-size: 0.8rem;
+  margin: 0;
 }
 
 .pane-dots {
